@@ -93,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {//是否选择，没选择就不会继续
             String path = data.getDataString();//得到uri，后面就是将uri转化成file的过程。
-            File file = new File(Uri.decode(path).replace("file://", ""));
+            Log.e("acitcitry-path", path);
+//            File file = new File(Uri.decode(path).replace("file://", ""));
+            File file = new File(Uri.decode(path).replace("content://com.android.externalstorage.documents/document/primary:", ""));
 //            Toast.makeText(MainActivity.this, file.toString(), Toast.LENGTH_SHORT).show();
             Log.e("acitcitry", file.toString() + "," + file.exists());
             List<Product> productFromSheet = new Jxl().getUserFromSheet(file);
