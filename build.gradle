@@ -2,9 +2,9 @@
 
 buildscript {
     repositories {
+        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven{ url'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
         google()
-        jcenter()
-
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'
@@ -16,9 +16,10 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        jcenter()
-        maven { url "https://jitpack.io" } // 这句话是自己额外添加的
+        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven{ url'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        maven { url "https://jitpack.io" }
+        google() // 这句话是自己额外添加的
     }
 }
 

@@ -15,7 +15,9 @@ public class PermisionUtils {
 
             Manifest.permission.READ_EXTERNAL_STORAGE,
 
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+    };
 
     /**
      * Checks if the app has permission to write to device storage
@@ -35,11 +37,16 @@ public class PermisionUtils {
 
 // Check if we have write permission
 
-        int permission = ActivityCompat.checkSelfPermission(activity,
+        int permissionWriteExternalStorage = ActivityCompat.checkSelfPermission(activity,
 
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-        if (permission != PackageManager.PERMISSION_GRANTED) {
+        int permissionCAMERA = ActivityCompat.checkSelfPermission(activity,
+
+                Manifest.permission.CAMERA);
+
+        if (permissionWriteExternalStorage != PackageManager.PERMISSION_GRANTED ||
+                permissionCAMERA != PackageManager.PERMISSION_GRANTED) {
 
 // We don't have permission so prompt the user
 
@@ -50,5 +57,4 @@ public class PermisionUtils {
         }
 
     }
-
 }

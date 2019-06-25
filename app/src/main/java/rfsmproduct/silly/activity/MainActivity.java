@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -56,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
                 delete();
             }
         });
+        findViewById(R.id.qcode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this, ScanActivity.class), 99);
+            }
+        });
 
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -68,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         //添加Android自带的分割线
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         find();
-
 
 
         final EditText findEt = findViewById(R.id.find_et);
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             String path = data.getDataString();//得到uri，后面就是将uri转化成file的过程。
             Log.e("acitcitry-path", path);
 //            File file = new File(Uri.decode(path).replace("file://", ""));
-            File file = new File(Uri.decode(path).replace("content://com.android.externalstorage.documents/document/primary:", ""));
+            File file = new File(Uri.decode(path).replace("content://com.android.externalstorage.documents/document/primary:", "/storage/emulated/0/"));
 //            Toast.makeText(MainActivity.this, file.toString(), Toast.LENGTH_SHORT).show();
             Log.e("acitcitry", file.toString() + "," + file.exists());
             List<Product> productFromSheet = new Jxl().getUserFromSheet(file);
@@ -107,6 +111,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+        // 扫码成功处理
+        if (resultCode == 99) {
+            String returnData = data.getStringExtra("data");
+            Log.e("acitcitry-returnData", returnData);
+            findBarCode(returnData);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -145,7 +157,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void findBarCode(String barCode) {
 
+        if (barCode.isEmpty()) {
+            find();
+            return;
+        }
+
+        try {
+            List<Product> query = productDao.QueryBarCode(barCode);
+            for (Product product : query) {
+                Log.d(TAG, "find: " + product);
+            }
+            products.clear();
+            products.addAll(query);
+            productAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void delete() {
         try {
@@ -155,10 +185,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
-
-
 
 
     public void shan() {

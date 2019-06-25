@@ -74,6 +74,17 @@ public class ProductDao {
         return list;
     }
 
+    // barCode查询
+    public List<Product> QueryBarCode(String barCode) {
+        List list = null;
+        try {
+            list = getdao.queryBuilder().where().like("bar_code", "%" + barCode + "%").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public void updates(Product product) {
         try {
 

@@ -22,6 +22,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="删除" />
+        <Button
+            android:id="@+id/qcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="扫码" />
 
     </LinearLayout>
 
